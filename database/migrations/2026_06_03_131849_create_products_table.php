@@ -20,10 +20,11 @@ return new class extends Migration
             $table->decimal('purchase_price', 15, 2);
             $table->decimal('selling_price', 15, 2);
             $table->integer('stock')->default(0);
-            $table->integer('minimun_stock')->default(0);
+            $table->integer('minimum_stock')->default(0);
             $table->text('description')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

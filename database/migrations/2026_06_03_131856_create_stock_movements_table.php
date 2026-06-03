@@ -14,18 +14,19 @@ return new class extends Migration
         Schema::create('stock_movements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('created_by')->constrained('users')->restrictOnDelete();
             $table->enum('type', [
-                'in', // Stock masuk
-                'out', // Stock keluar
-                'sale', // Penjualan
-                'adjustment', // Penyesuaian stock
+                'in',
+                'out',
+                'sale',
+                'adjustment',
             ]);
             $table->integer('quantity');
             $table->integer('stock_before');
             $table->integer('stock_after');
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

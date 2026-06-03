@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_number')->unique();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->restrictOnDelete();
             $table->decimal('subtotal', 15, 2);
             $table->decimal('discount', 15, 2)->default(0);
             $table->decimal('total', 15, 2);
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('change_amount', 15, 2);
             $table->decimal('profit', 15, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
