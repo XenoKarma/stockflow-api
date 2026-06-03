@@ -23,7 +23,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
     ];
 
     /**
@@ -51,12 +50,12 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->hasRole('admin');
     }
 
     public function isCashier(): bool
     {
-        return $this->role === 'cashier';
+        return $this->hasRole('cashier');
     }
 
     public function transactions()
@@ -71,4 +70,25 @@ class User extends Authenticatable
             'created_by'
         );
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return $this->roles()
+            ->where('slug', $role)
+            ->exists();
+    }
+
+    public function hasPermission(string $permission): bool
+    {
+    return $this->roles()->whereHas('permissions',function ($query) use ($permission)
+        {
+            $query->where('slug',$permission);
+        }
+    )->exists();
+}
 }
